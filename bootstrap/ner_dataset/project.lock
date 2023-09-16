@@ -1,0 +1,60 @@
+preprocess:
+  cmd: python -m spacy run preprocess
+  script:
+    - python scripts/convert_corpus.py
+  deps:
+    - path: assets/ner_dataset.csv
+      md5: 5d44cf3d9103e6ab3cbf076ea300d741
+  outs:
+    - path: corpus/train.spacy
+      md5: ac2f535d7f0dd2c7f47c8d65860b1028
+    - path: corpus/dev.spacy
+      md5: e88a990490dd299ce9695f2f956c1b43
+    - path: corpus/test.spacy
+      md5: fcc4d1ecea91c8d73779cca0837e2004
+  spacy_version: 3.6.1
+  spacy_git_version: 458bc5f45
+train:
+  cmd: python -m spacy run train
+  script:
+    - python -m spacy train ./configs/cnn.cfg -o training/cnn --gpu-id -1
+  deps:
+    - path: corpus/train.spacy
+      md5: ac2f535d7f0dd2c7f47c8d65860b1028
+    - path: corpus/dev.spacy
+      md5: e88a990490dd299ce9695f2f956c1b43
+    - path: configs/cnn.cfg
+      md5: fbc501e0e54c7224eef3808aacb77d63
+  outs:
+    - path: training/cnn/model-best
+      md5: d069b4aa457f0139c9e7b0a8ec838b49
+  spacy_version: 3.6.1
+  spacy_git_version: 458bc5f45
+evaluate:
+  cmd: python -m spacy run evaluate
+  script:
+    - python -m spacy evaluate ./training/cnn/model-best ./corpus/test.spacy --output
+      ./metrics/cnn.json
+  deps:
+    - path: training/cnn/model-best
+      md5: d069b4aa457f0139c9e7b0a8ec838b49
+    - path: corpus/test.spacy
+      md5: fcc4d1ecea91c8d73779cca0837e2004
+  outs:
+    - path: metrics/cnn.json
+      md5: 3caa50b799bcf9edfbfc0d63271519a2
+  spacy_version: 3.6.1
+  spacy_git_version: 458bc5f45
+package:
+  cmd: python -m spacy run package
+  script:
+    - python -m spacy package ./training/cnn/model-best packages/ --name ner_dataset
+      --force --version 0.0.1 --build wheel --meta-path ./training/cnn/model-best/meta.json
+  deps:
+    - path: training/cnn/model-best
+      md5: d069b4aa457f0139c9e7b0a8ec838b49
+  outs:
+    - path: packages/ner_dataset-0.0.1/dist/ner_dataset-0.0.1.tar.gz
+      md5: null
+  spacy_version: 3.6.1
+  spacy_git_version: 458bc5f45

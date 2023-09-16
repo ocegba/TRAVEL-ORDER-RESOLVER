@@ -1,3 +1,6 @@
-datas
 .venv
-output
+datas
+assets
+corpus
+packages
+training
