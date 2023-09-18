@@ -22,6 +22,7 @@ exceptiongroup==1.1.3
 executing==1.2.0
 filelock==3.12.4
 fonttools==4.42.1
+fr-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_lg-3.6.0/fr_core_news_lg-3.6.0-py3-none-any.whl#sha256=3858ac2323d2c0fcd1fb2ef25325cfc7da2797a9501dad1c6b676bc779a1c257
 fr-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.6.0/fr_core_news_sm-3.6.0-py3-none-any.whl#sha256=88ba4254539a7efb51d5e0c5b6c4ea5b350542752b634088274c1b97d8c8b8ee
 fsspec==2023.9.0
 gitdb==4.0.10
@@ -80,6 +81,7 @@ requests==2.31.0
 rich==13.5.2
 rpds-py==0.10.3
 safetensors==0.3.3
+scipy==1.11.2
 six==1.16.0
 smart-open==6.4.0
 smmap==5.0.0
