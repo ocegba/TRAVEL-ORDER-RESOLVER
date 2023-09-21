@@ -4,3 +4,6 @@ assets
 corpus
 packages
 training
+record.wav
+text_enregistrement.txt
+__pycache__
