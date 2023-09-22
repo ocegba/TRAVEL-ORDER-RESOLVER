@@ -1,0 +1,1 @@
+Departure Gare de Caen -> Step_1 Gare de Tours -> Step_2 Gare de Paris-Bercy -> Step_3 Gare de Lyon-Part-Dieu -> Destination Gare de Marseille-St-Charles
