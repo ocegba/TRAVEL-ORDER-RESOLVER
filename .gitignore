@@ -7,3 +7,4 @@ training
 record.wav
 text_enregistrement.txt
 __pycache__
+project.lock
