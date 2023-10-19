@@ -1,132 +1,97 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import csv
-
-from string import ascii_uppercase
-
-import itertools
-from itertools import combinations
-
+import heapq
+import matplotlib.pyplot as plt
 import networkx as nx
-from collections import deque
 
-class Djikstra:
-    def __init__(self, trajets_file, view_graph):
-        self.trajets_file = trajets_file
-        self.view_graph = ""
+class Dijkstra:
+    def __init__(self, filename):
+        self.connections = {}
+        self.load_data(filename)
 
-    def graphe_trajets(self):
-        graphe = {}
-        
-        with open(self.trajets_file, encoding='utf-8', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter='\t')
-            next(reader)  # Sauter la première ligne
-            
-            for row in reader:
+    def load_data(self, filename):
+        trip_ids = []
+        trajets = []
+        durees = []
+
+        with open(filename, mode='r', encoding='utf-8') as file:
+            csv_reader = csv.reader(file, delimiter='\t')
+            next(csv_reader)
+
+            for row in csv_reader:
                 trip_id, trajet, duree = row
-                gares_split = trajet.split(' - ')
-                
-                if len(gares_split) == 2:
-                    gare_origine, gare_destination = gares_split
-                
-                if gare_origine not in graphe:
-                    graphe[gare_origine] = [] # créer la premiere valeur 
-                    
-                if gare_destination not in graphe:
-                    graphe[gare_destination] = [] # ceux qui ne sont jamais pris en tant que départ
+                trip_ids.append(trip_id)
+                trajets.append(trajet)
+                durees.append(int(duree))
 
-                graphe[gare_origine].append((trip_id, gare_destination, duree)) 
-                graphe[gare_destination].append((trip_id, gare_origine, duree))
+        for i in range(len(trip_ids)):
+            parts = trajets[i].split(" - ")
+            departure, destination = parts[0], parts[1]
+            duree = durees[i]
+            if departure not in self.connections:
+                self.connections[departure] = []
+            self.connections[departure].append((destination, duree))
+            if destination not in self.connections:
+                self.connections[destination] = []
+            self.connections[destination].append((departure, duree))
+
+    def find_shortest_path(self, departure, destination):
+        visited = set()
+        distances = {city: float('inf') for city in self.connections}
+        previous_city = {city: None for city in self.connections}
+        distances[departure] = 0
+        queue = [(0, departure)]
+
+        while queue:
+            current_distance, current_city = heapq.heappop(queue)
+            if current_city in visited:
+                continue
+            visited.add(current_city)
+            for neighbor, weight in self.connections[current_city]:
+                distance = current_distance + weight
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    previous_city[neighbor] = current_city
+                    heapq.heappush(queue, (distance, neighbor))
+
+        route = []
+        current = destination
+        while current:
+            route.insert(0, current)
+            current = previous_city[current]
+
+        cumulative_distance = distances[destination]
+
+        formatted_string = f'Departure {route[0]}'
+        for i in range(1, len(route)-1):
+            formatted_string += f' -> Step_{i} {route[i]}'
+        formatted_string += f' -> Destination {route[-1]}\nTemps passé: {cumulative_distance/60} h'
         
-        return graphe
-    
-    def graphe_dirige_trajets(self):
-        # Créez un nouveau graphe dirigé
-        G = nx.DiGraph()
+        with open("chemin_djikstra.txt", "w") as trajet:
+            trajet.write(formatted_string)
 
-        graphe_gares = self.graphe_trajets()
+        return route, cumulative_distance, formatted_string
 
-        # Ajoutez les nœuds et les arêtes à partir de votre dictionnaire
-        for node, edges in graphe_gares.items():
-            for tripId, edge, weight in edges:
-                G.add_edge(node, edge, weight=float(weight))
-
-        if self.view_graph:
-            print("\nPour vérification: Forme du graphe")
-            print("------------------------------------")
-
-            pos = nx.spring_layout(G)
-            
-            # Crée une nouvelle figure avec une taille personnalisée (largeur, hauteur) en pouces
-            fig, ax = plt.subplots(figsize=(20, 6))
-
-            nx.draw(G, with_labels=True, pos=pos, node_size=800, node_color='lightblue', \
-                    font_size=10, font_color='black', font_weight='bold', \
-                    font_family='sans-serif', style='dashed', linewidths=2 )
-
-            plt.savefig("./djikstra_graph.png")
-
-
-        return nx.to_dict_of_lists(G)
-
-    def plus_court_chemin(self, source, destination):
-        G = self.graphe_dirige_trajets()
-
-        # dictionnaire des prédecesseurs
-        predecesseurs = {source: None}
-        # Créer une file
-        f = deque()
-        # Enfiler le sommet de départ
-        f.appendleft(source)
-        # Liste des sommets visités
-        visites = [source]
+    def draw_graph(self):
+        G = nx.Graph()
         
-        # TANT QUE la file est non vide
-        while f:
-            # On récupère le noeud
-            s = f.pop()
-            # POUR TOUT voisin t de s dans G
-            for t in G[s]:
-                if t == destination:
-                    # Destination trouvée, on remonte le chemin
-                    ville = s
-                    chemin = [destination]
-                    while ville:
-                        chemin.append(ville)
-                        ville = predecesseurs[ville]
-                    # On remet dans l'ordre
-                    chemin.reverse()
-                    return chemin
-                # SI t non marqué
-                elif t not in visites:
-                    # Enfiler t
-                    f.appendleft(t)
-                    # Marquer t
-                    visites.append(t)
-                    # Mise à jour du dictionnaire des prédecesseurs
-                    predecesseurs[t] = s
-        # Destination non trouvée
-        return []
-    
-    def format_plus_court_chemin(self, source, destination):
-        chemin = self.plus_court_chemin( source, destination)
+        for city, connections in self.connections.items():
+            for neighbor, weight in connections:
+                G.add_edge(city, neighbor, weight=weight)
+        
+        pos = nx.spring_layout(G)  # Layout du graphique
+        
+        edge_labels = {(city, neighbor): f"{data['weight']} km" for city, neighbor, data in G.edges(data=True)}
+        
+        nx.draw(G, pos, with_labels=True, node_size=1500, node_color='skyblue', font_size=10, font_color='black')
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
+        
+        plt.title("Graphique des connexions entre les villes")
+        plt.savefig("./djikstra_graph.png")
 
-        if len(chemin) > 0 :
-            formatted_string = f'Departure {chemin[0]}'
-
-            for i in range(1, len(chemin)-1):
-                formatted_string += f' -> Step_{i} {chemin[i]}'
-
-            formatted_string += f' -> Destination {chemin[-1]}'
-        else :
-            formatted_string = f"Pas de chemin trouvé entre {source} et {destination}"
-
-        return formatted_string
 
 if __name__ == "__main__":
-    csv_trajet = "../datas/timetables.csv"
-
-    graphe = Djikstra(csv_trajet, False)
-    chemin = graphe.format_plus_court_chemin("Gare de Caen", "Gare de Marseille-St-Charles")
-    with open("chemin_djikstra.txt", "w") as trajet:
-        trajet.write(chemin)
+    dijkstra = Dijkstra('../datas/timetables.csv')
+    dijkstra.draw_graph()
+    departure ="Gare de Caen"
+    destination = "Gare de Marseille-St-Charles"
+    route, cumulative_distance, formatted_string = dijkstra.find_shortest_path(departure, destination)
