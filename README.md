@@ -1,3 +1,3 @@
 Notes :
 
-https://spurious-sphere-1d6.notion.site/D-finitions-7ff9f06da8a24569aea20eda283e4722?pvs=4
+https://spurious-sphere-1d6.notion.site/e5557b8813894985ba61d185fea2edc1?v=3f134071d44a452bb18f7b9e467ee432&pvs=4
