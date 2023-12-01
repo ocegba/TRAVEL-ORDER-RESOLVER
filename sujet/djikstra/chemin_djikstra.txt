@@ -1,0 +1,2 @@
+Departure Gare de Caen -> Step_1 Gare de Tours -> Step_2 Gare de Nevers -> Step_3 Gare de Lyon-Perrache -> Step_4 Gare de Valence-Ville -> Destination Gare de Marseille-St-Charles
+Temps passé: 12.566666666666666 h

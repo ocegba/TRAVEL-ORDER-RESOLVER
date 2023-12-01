@@ -1,0 +1,9 @@
+.venv
+datas
+assets
+corpus
+training
+record.wav
+text_enregistrement.txt
+__pycache__
+project.lock

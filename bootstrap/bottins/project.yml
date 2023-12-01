@@ -1,0 +1,94 @@
+title: "e a bottins.csv dataset with annotated entries from 20th-century directories"
+description: | 
+
+  The specificity of this dataset is that the annotation is directly done in the text. To test the NER,
+  you will need to start by splitting the annotation to have the original text on one side and the
+  annotated tokens on the other. This phase requires a bit more work than the previous one before
+  you can get the initial results.
+  Once the cleaning is done, try running spaCy as well as a NER model based on Transformers
+  (e.g., BERT), and evaluate the results.
+
+# Variables can be referenced across the project.yml using ${vars.var_name}
+vars:
+  name: "ner_dataset"
+  version: "0.0.1"
+  lang: "fr"
+  # Choose your GPU here
+  gpu_id: -1
+  # Change this to "bert" to use the transformer-based model
+  config: "bert"
+
+# These are the directories that the project needs. The project CLI will make
+# sure that they always exist.
+# mkdir -p assets training configs metrics packages scripts corpus
+directories: ["assets", "training", "configs", "metrics", "packages", "scripts", "corpus"]
+
+# Assets that should be downloaded or available in the directory.
+# python -m spacy project assets
+assets:
+  - dest: "assets/bottins.csv"
+    url: "../datas/bottins.csv"
+    description: "bottins.csv"
+  # Uncomment this asset if you want to download the vectors.
+  #- dest: "assets/vectors.zip"
+  #  url: "https://dl.fbaipublicfiles.com/fasttext/vectors-english/crawl-300d-2M.vec.zip"
+
+# Workflows are sequences of commands (see below) executed in order. You can
+# run them via "spacy project run [workflow]". If a commands's inputs/outputs
+# haven't changed, it won't be re-run.
+workflows:
+  all:
+    - preprocess
+    - train
+    - evaluate
+    - package
+
+commands: 
+  - name: preprocess
+    help: "Convert the corpus to spaCy's format"
+    script:
+      - "python scripts/convert_corpus.py"
+    deps:
+      - "assets/bottins.csv"
+    outputs_no_cache:
+      - "corpus/train.spacy"
+      - "corpus/dev.spacy"
+      - "corpus/test.spacy"
+
+  - name: train
+    help: "Train a spaCy pipeline using the specified corpus and config"
+    script:
+      - "python -m spacy train ./configs/${vars.config}.cfg -o training/${vars.config} --gpu-id ${vars.gpu_id}"
+    deps:
+      - "corpus/train.spacy"
+      - "corpus/dev.spacy"
+      - "configs/${vars.config}.cfg"
+    outputs:
+      - "training/${vars.config}/model-best"
+      
+  - name: evaluate
+    help: "Evaluate on the test data and save the metrics"
+    script:
+      - "python -m spacy evaluate ./training/${vars.config}/model-best ./corpus/test.spacy --output ./metrics/${vars.config}.json"
+    deps:
+      - "training/${vars.config}/model-best"
+      - "corpus/test.spacy"
+    outputs:
+      - "metrics/${vars.config}.json"
+
+  - name: package
+    help: "Package the trained model so it can be installed"
+    script:
+      - "python -m spacy package ./training/${vars.config}/model-best packages/ --name ${vars.name} --force --version ${vars.version} --build wheel --meta-path ./training/${vars.config}/model-best/meta.json"
+    deps:
+      - "training/${vars.config}/model-best"
+    outputs_no_cache:
+      - "packages/${vars.name}-${vars.version}/dist/${vars.name}-${vars.version}.tar.gz"
+
+  - name: visualize
+    help: Visualize the model's output interactively using Streamlit
+    script:
+      - "streamlit run scripts/visualize_model.py training/${vars.config}/model-best \"Dufay,  papetier,  r. S.-Martin, 20\""
+    deps:
+      - "scripts/visualize_model.py"
+      - "training/${vars.config}/model-best"
