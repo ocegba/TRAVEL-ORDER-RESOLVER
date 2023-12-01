@@ -26,11 +26,14 @@ def main(
         dest_start = int(row["START_DEST"])
         dest_end = int(row["END_DEST"])
 
-        formatted_item = (
-            text,
-            {"entities": [(dep_start, dep_end, "DEP"), (dest_start, dest_end, "DEST")]},
-        )
+        entities = []
 
+        # Check if entities conflict before adding them
+        if (dep_start, dep_end, "DEP") != (dest_start, dest_end, "DEST"):
+            entities.append((dep_start, dep_end, "DEP"))
+            entities.append((dest_start, dest_end, "DEST"))
+
+        formatted_item = (text, {"entities": entities})
         formatted_data.append(formatted_item)
 
     for text, annotations in formatted_data:

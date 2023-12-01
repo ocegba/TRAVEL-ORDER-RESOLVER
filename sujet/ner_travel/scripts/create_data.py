@@ -10,7 +10,7 @@ import os
 def generate_data(output_path: Path):
     villes = read_csv("assets/csv/cities.csv", encoding="ISO-8859-1", usecols=["name"])
 
-    existing_data = read_csv(output_path, on_bad_lines='skip', sep=",")
+    existing_data = read_csv(output_path, on_bad_lines="skip", sep=",")
 
     patterns = [
         "Après avoir exploré les rues animées de {}, je me suis dirigé(e) vers {} pour un peu de tranquillité.",
@@ -115,7 +115,6 @@ def generate_data(output_path: Path):
         "En découvrant {}, j'ai été attiré(e) par {} et sa réputation de ville animée et cosmopolite.",
         "Après {} est venu {} dans mon itinéraire, m'offrant une transition parfaite entre deux expériences uniques.",
         "J'ai exploré {} avant de me diriger vers {} pour une immersion dans des paysages à couper le souffle.",
-        "Ma route m'a conduit(e) de {} à {} où j'ai eu la chance de participer à des festivités locales.",
         "Après mon séjour à {}, j'ai continué vers {} pour une expérience gastronomique exceptionnelle.",
         "J'ai voyagé de {} à {} pour découvrir de nouvelles coutumes et traditions fascinantes.",
         "De {} jusqu'à {}, mon trajet a été ponctué de découvertes surprenantes qui ont enrichi mon expérience.",
@@ -322,9 +321,15 @@ def generate_data(output_path: Path):
         if pattern_elements > len(available_cities):
             pattern_elements = len(available_cities)
 
-        replacements = random.sample(
-            available_cities, pattern_elements
-        )  # Sélectionner les éléments à remplacer
+        replacements = random.sample(available_cities, pattern_elements)
+
+        while (
+            len(replacements) >= 2
+            and replacements[0] in replacements[1]
+            or replacements[1] in replacements[0]
+        ):
+            replacements = random.sample(available_cities, pattern_elements)
+
         line = pattern.format(
             *replacements
         )  # Formater la phrase avec les éléments sélectionnés
@@ -338,7 +343,8 @@ def generate_data(output_path: Path):
                 "TEXT": line,
                 "DEPART": depart_replace,
                 "START_DEPART": line_without_spaces.find(depart_replace) + 1,
-                "END_DEPART": len(depart_replace) + line_without_spaces.find(depart_replace),
+                "END_DEPART": len(depart_replace)
+                + line_without_spaces.find(depart_replace),
                 "DEP": "DEP",
                 "DESTINATION": dest_replace,
                 "START_DEST": line_without_spaces.find(dest_replace) + 1,
