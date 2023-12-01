@@ -28,6 +28,9 @@ assets:
   - dest: "assets/${vars.dev}.csv"
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvgPjfK6KwI3MWnPJBdJd5zQ9aW1Uq1R5PAMQHgkB7BQnN3JlLGZnUyxLPjiaTuIAE_SXDROedYhuX/pub?gid=1676785879&single=true&output=csv"
     description: "The evaluate data"
+  - dest: "assets/villes.tar.gz"
+    url: "https://static.data.gouv.fr/resources/regions-departements-villes-et-villages-de-france-et-doutre-mer/20180802-085038/French-zip-code-3.0.0-CSV.tar.gz"
+    description: "Les villes de France"
 
 # Workflows are sequences of commands (see below) executed in order. You can
 # run them via "spacy project run [workflow]". If a commands's inputs/outputs
@@ -37,6 +40,9 @@ workflows:
     - preprocess
     - train
     - evaluate
+
+  create_data:
+    - create-data
 
   visualize_the_model : 
     - visualize-model
@@ -49,12 +55,24 @@ workflows:
 # via "spacy project run [command] [path]". The help message is optional and
 # shown when executing "spacy project run [optional command] [path] --help".
 commands:
+  - name: "create-data"
+    help: "Create the training and the evaluate datas"
+    script:
+      - "python scripts/create_data.py assets/villes.tar.gz assets/${vars.train}.csv"
+      - "python scripts/create_data.py assets/villes.tar.gz assets/${vars.train}.csv"
+      - "python scripts/create_data.py assets/villes.tar.gz assets/${vars.dev}.csv"
+    deps:
+      - "assets/villes.tar.gz"
+      - "assets/${vars.train}.csv"
+      - "assets/${vars.dev}.csv"
+
   - name: "preprocess"
     help: "Convert the data to spaCy's binary format"
     script:
       - "python scripts/preprocess.py assets/${vars.train}.csv corpus/${vars.train}.spacy"
       - "python scripts/preprocess.py assets/${vars.dev}.csv corpus/${vars.dev}.spacy"
     deps:
+      - "assets/villes.tar.gz"
       - "assets/${vars.train}.csv"
       - "assets/${vars.dev}.csv"
       - "scripts/preprocess.py"
