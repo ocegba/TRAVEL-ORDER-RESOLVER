@@ -4,6 +4,7 @@ assets
 corpus
 training
 record.wav
+logs
 text_enregistrement.txt
 __pycache__
 project.lock
