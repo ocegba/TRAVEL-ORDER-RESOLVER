@@ -689,11 +689,13 @@ class DataGenerator:
                         }
                     )
 
-    def split_data(self, train_ratio=0.2, dev_ratio=0.1):
+    def split_data(self, train_ratio=0.4, dev_ratio=0.2, test_ratio=0.2):
+        logging.info(f"Split datas...")
         num_sentences = len(self.sentences)
+
         num_train = int(num_sentences * train_ratio)
         num_dev = int(num_sentences * dev_ratio)
-        num_test = int(num_sentences * dev_ratio)
+        num_test = int(num_sentences * test_ratio)
 
         train_set = self.docs[:num_train]
         dev_set = self.docs[num_train : num_train + num_dev]
