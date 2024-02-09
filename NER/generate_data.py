@@ -689,7 +689,7 @@ class DataGenerator:
                         }
                     )
 
-    def split_data(self, train_ratio=0.4, dev_ratio=0.3):
+    def split_data(self, train_ratio=0.2, dev_ratio=0.1):
         num_sentences = len(self.sentences)
         num_train = int(num_sentences * train_ratio)
         num_dev = int(num_sentences * dev_ratio)

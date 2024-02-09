@@ -6,7 +6,7 @@ import langid
 nlp_fr = spacy.load('fr_core_news_sm')
 
 # Specify the local path to your model
-model_path = "NER/models/trajet_v1"
+model_path = "./models/trajet_v1"
 
 # Load the tokenizer and model from the local path
 tokenizer = CamembertTokenizerFast.from_pretrained(model_path)
@@ -27,7 +27,7 @@ def process_sentence(sentence, tokenizer, model):
     predicted_labels = [model.config.id2label[label_id] for label_id in predicted_label_ids]
 
     dep_words = [word for word, label in zip(tokenizer.convert_ids_to_tokens(inputs["input_ids"].squeeze().tolist()), predicted_labels) if label in ['B-DEP', 'I-DEP']]
-    print(dep_words)
+
     dest_words = [word for word, label in zip(tokenizer.convert_ids_to_tokens(inputs["input_ids"].squeeze().tolist()), predicted_labels) if label in ['B-DEST', 'I-DEST']]
     # Join multi-token entities for departure
     dep_entities = join_multi_token_entities(dep_words)
@@ -55,19 +55,17 @@ def detect_language(sentence):
     return langid.classify(sentence)
 
 def main():
-    input_file_path = "NER/sample_nlp_input.txt"
-    output_file_path = "NER/sample_nlp_output.txt"
+    input_file_path = os.path.abspath("sample_nlp_input.txt")
+    output_file_path = os.path.abspath("sample_nlp_output.txt")
 
     with open(input_file_path, 'r', encoding='utf-8') as input_file, \
          open(output_file_path, 'w', encoding='utf-8') as output_file:
 
         for line in input_file:
             line = line.strip().split(',', 1)
-            print("*"*100)
             
             # Extract sentence_id and sentence from the line
             sentence_id, sentence = line[0], line[1]
-            print(line[1])
 
             # Check if sentence_id is a number
             if not sentence_id.isdigit():
@@ -84,7 +82,7 @@ def main():
                 if all(label == 'O' for label in predicted_labels):
                     output_file.write(f"{sentence_id},NOT_TRIP\n")
                 else:
-                    output_file.write(f"{sentence_id },{', '.join(dep_words)}, {', '.join(dest_words)} =====>> {dep_words} - {dest_words}\n")
+                    output_file.write(f"{sentence_id },{', '.join(dep_words)}, {', '.join(dest_words)} ====> {dep_words} - {dest_words}\n")
             
             else:
                 output_file.write(f"{sentence_id},NOT_FRENCH\n")
