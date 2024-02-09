@@ -93,7 +93,7 @@ commands:
   - name: "evaluate"
     help: "Evaluate the model and export metrics"
     script:
-      - "python -m spacy evaluate training/model-best corpus/${vars.dev}.spacy --output training/metrics.json"
+      - "python -m spacy evaluate training/model-best corpus/${vars.dev}.spacy --output metrics/metrics.json"
     deps:
       - "corpus/${vars.dev}.spacy"
       - "training/model-best"

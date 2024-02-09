@@ -1,9 +1,12 @@
 .venv
 datas
+models
 assets
 corpus
 training
 record.wav
+logs
 text_enregistrement.txt
 __pycache__
+test-ner
 project.lock
