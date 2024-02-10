@@ -1,0 +1,16 @@
+1,je voudrais aller de Toulouse à bordeaux
+2,Comment me rendre à Port-Boulet depuis la gare de Tours ?
+3,Je veux aller voir mon ami Albert à Tours en partant de Bordeaux
+4,Il y a-t-il des trains de Nantes à Montaigu
+5,Une phrase sans origine ni destination
+17,Die Entdeckung von Madrid und dann von Barcelona hat mich verändert
+Si pas de numéro de séquence, on considère que c'est zéro
+7,is there any train going from Paris to Marseille ?
+8,Existe-t-il des vols directs de Nice à New York ?
+9,Pouvez-vous me donner des indications pour aller de Rennes à Saint-Malo en bus ?
+Pas de num,Je cherche des vols bon marché de Bordeaux à Barcelone.
+10,Comment puis-je aller de Grenoble à Annecy en train ?
+11,How can I travel from Brussels to Cologne by train?
+12, Rick et Morty ont décide de partir en Ukraine.
+13, Découvrir Lyon en partant de toulouse
+14, Voglio andare da Bangkok a Venezia

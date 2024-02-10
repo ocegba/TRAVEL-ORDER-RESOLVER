@@ -1,0 +1,16 @@
+1,Toulouse, bordeaux,  ====> ['Toulouse', 'bordeaux'] - []
+2,Port-, Boulet, Tours ====> ['Port-'] - ['Boulet', 'Tours']
+3,Albert, Tours, Bordeaux,  ====> ['Albert', 'Tours', 'Bordeaux'] - []
+4,Nantes, Montaigu,  ====> ['Nantes', 'Montaigu'] - []
+5,NOT_TRIP
+17,NOT_FRENCH
+0,NOT_TRIP
+7,NOT_FRENCH
+8,Nice, New, York ====> ['Nice'] - ['New', 'York']
+9,Rennes, Saint-Malo ====> ['Rennes'] - ['Saint-Malo']
+0,NOT_TRIP
+10,Grenoble, Annecy ====> ['Grenoble'] - ['Annecy']
+11,NOT_FRENCH
+12,Morty,  ====> ['Morty'] - []
+13,Lyon, toulouse,  ====> ['Lyon', 'toulouse'] - []
+14,NOT_FRENCH
