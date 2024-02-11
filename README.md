@@ -22,8 +22,6 @@ Install my-project with npm
   npm install my-project
   cd my-project
 ```
-    ## Installation
-
 
 ### Clone the Repository
 
@@ -44,10 +42,67 @@ source .venv/bin/activate # On macOS/Linux
 pip install -r requirements.txt
 ```
 
+## Usage
 
-## Acknowledgements
+### Training or Using the Model
 
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
+**1) From Scratch**
 
+If you want to train the model from scratch:
+
+1. Execute `python generate_data.py` to generate or download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing).
+2. Run `camembert_model.ipynb` to train the model.
+3. After training, you can use the model in `main.py`.
+
+**2) Using a Pretrained Model**
+
+If you want to use a pretrained model:
+
+1. Download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing) and the pretrained model repository from [here](https://drive.google.com/drive/folders/1vWVqxsKW2YoniYJZUIgs8RuayMPTSKu8?usp=sharing).
+2. Place the downloaded files in the appropriate directories (`datas/` and `models/`).
+3. Run `main.py` to utilize the pretrained model for travel order resolution.
+
+### Testing
+
+To test the functionality of the program:
+
+1. Ensure that the required dependencies are installed and the virtual environment is activated.
+2. Modify or add some sentences in `sample_nlp_input.txt`.
+3. Run `main.py`.
+4. Review the generated travel itinerary or any validation messages.
+
+## Project Architectures
+
+    .
+    ├── README.md
+    ├── __pycache__
+    ├── camembert_model.ipynb
+    ├── datas
+    │   ├── cache
+    │   ├── csv
+    │   │   ├── cities.csv
+    │   │   ├── departments.csv
+    │   │   └── regions.csv
+    │   ├── dev_iob.csv
+    │   ├── test_iob.csv
+    │   └── train_iob.csv
+    ├── generate_data.py
+    ├── main.py
+    ├── models
+    │   └── trajet_v1
+    │       ├── added_tokens.json
+    │       ├── config.json
+    │       ├── model.safetensors
+    │       ├── sentencepiece.bpe.model
+    │       ├── special_tokens_map.json
+    │       ├── tokenizer.json
+    │       ├── tokenizer_config.json
+    │       └── training_args.bin
+    ├── requirements.txt
+    ├── results
+    │   └── results.json
+    ├── sample_nlp_input.txt
+    ├── sample_nlp_output.txt
+    ├── test-ner
+    ├── tokenizer.py
+    └── trajet_dataset.py
