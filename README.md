@@ -207,8 +207,28 @@ After training, the model was evaluated on a separate test dataset. Metrics such
 The final results, including metrics and any notable observations, were saved to a JSON file for further analysis. This file is stored in the "results" directory.
 
 ### Metrics
-For evaluating the performance of your model, we've mentioned optimizing the F1 score as the primary metric. Additionally, we could consider including other metrics such as precision, recall, and accuracy. 
+For evaluating the performance of your model, we've mentioned optimizing the F1 score as the primary metric. Additionally, we could consider including other metrics such as precision, recall, and accuracy. To do that, we referred to this [documentation](https://huggingface.co/docs/transformers/tasks/token_classification#evaluate) 
 
-## Résultats
+## Results
+We obtain :
+
+    {
+    "DEP": {
+        "precision": 0.7963299418604651,
+        "recall": 0.8560546875,
+        "f1": 0.825112951807229,
+        "number": 15360
+    },
+    "DEST": {
+        "precision": 0.8377068557919621,
+        "recall": 0.9227864583333333,
+        "f1": 0.8781908302354398,
+        "number": 15360
+    },
+    "overall_precision": 0.8172708782005265,
+    "overall_recall": 0.8894205729166667,
+    "overall_f1": 0.85182067589475,
+    "overall_accuracy": 0.9769229927925366
+    }
 
 ## Conclusion
