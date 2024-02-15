@@ -50,17 +50,19 @@ pip install -r requirements.txt
 
 If you want to train the model from scratch:
 
-1. Execute `python generate_data.py` to generate or download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing).
-2. Run `camembert_model.ipynb` to train the model.
-3. After training, you can use the model in `main.py`.
+1. You have to create a virtual environment and install `python -m spacy download fr_core_news_sm`.
+2. Execute `python generate_data.py` to generate or download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing).
+3. Run `camembert_model.ipynb` to train the model.
+4. After training, you can use the model in `main.py`.
 
 **2) Using a Pretrained Model**
 
 If you want to use a pretrained model:
 
-1. Download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing) and the pretrained model repository from [here](https://drive.google.com/drive/folders/1vWVqxsKW2YoniYJZUIgs8RuayMPTSKu8?usp=sharing).
-2. Place the downloaded files in the appropriate directories (`datas/` and `models/`).
-3. Run `main.py` to utilize the pretrained model for travel order resolution.
+1. You have to create a virtual environment and install `python -m spacy download fr_core_news_sm`.
+2. Download the required data files [here](https://drive.google.com/drive/folders/1CwlDv9-gv2yMrvKn3sGn3sgh0O70P5Th?usp=sharing) and the pretrained model repository from [here](https://drive.google.com/drive/folders/1vWVqxsKW2YoniYJZUIgs8RuayMPTSKu8?usp=sharing).
+3. Place the downloaded files in the appropriate directories (`datas/` and `models/`).
+4. Run `main.py` to utilize the pretrained model for travel order resolution.
 
 ### Testing
 
