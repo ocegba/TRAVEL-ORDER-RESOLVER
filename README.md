@@ -147,7 +147,11 @@ Camembert's focus on the French language, coupled with strong community support 
 We referred to the process outlined in the [Hugging Face documentation](https://huggingface.co/docs/transformers/tasks/token_classification) to realize this project.
 
 ### Dataset
-To create the dataset, we referred to the approach outlined in the [Hugging Face documentation](https://huggingface.co/docs/transformers/tasks/token_classification#load-wnut-17-dataset). Recognizing the importance of dataset diversity, we devised a method to ensure variability within the generated sentences.
+We've opted to create an IOB-formatted CSV file. This choice, prevalent in natural language processing and machine learning, provides a clear and structured representation of entities in text, indicating whether they are inside, outside, or at the beginning of a sequence. The IOB format facilitates model training, conveying crucial information on entity sequence and hierarchy.
+
+The IOB format is widely compatible with tools like NLTK in Python, streamlining integration into existing natural language processing pipelines. Moreover, utilizing CSV as the storage format brings practical advantages, enabling easy manipulation using standard tools like spreadsheets, databases, or Python's Pandas library.
+
+We referred to the approach outlined in the [Hugging Face documentation](https://huggingface.co/docs/transformers/tasks/token_classification#load-wnut-17-dataset). Recognizing the importance of dataset diversity, we devised a method to ensure variability within the generated sentences.
 
 **1) Creation**
 
@@ -202,6 +206,19 @@ We used the CamembertForTokenClassification model from the Hugging Face Transfor
 **Training Configuration**      
 The training process involved defining hyperparameters, such as the learning rate, batch size, and maximum number of epochs. We employed the AdamW optimizer with weight decay, gradient accumulation steps, and gradient checkpointing for memory efficiency.
 
+The model was trained with carefully chosen hyperparameters on the tokenized training dataset. Each epoch's performance was assessed on the validation set, ensuring continual monitoring and prompt identification of potential issues.
+
+Hyperparameters Justification:
+
+    - Learning Rate, Batch Size, and Number of Epochs:
+    These were tuned for efficient convergence and generalization, avoiding overfitting or underfitting.
+    - Weight Decay: 
+    Moderately applied to prevent overfitting and enhance generalization.
+    - Gradient Accumulation Steps:
+    Enabled to manage GPU memory efficiently, allowing training of larger models.
+    - Gradient Checkpointing:
+    Implemented for memory optimization during backpropagation.
+
 **Training and Evaluation**     
 The model was trained using the defined hyperparameters and the tokenized training dataset. Evaluation was performed after each epoch on the validation dataset, and the training process was repeated for the specified number of epochs.
 
@@ -215,7 +232,7 @@ The final results, including metrics and any notable observations, were saved to
 For evaluating the performance of your model, we've mentioned optimizing the F1 score as the primary metric. Additionally, we could consider including other metrics such as precision, recall, and accuracy. To do that, we referred to this [documentation](https://huggingface.co/docs/transformers/tasks/token_classification#evaluate) 
 
 ## Results
-We obtain :
+We obtain the first time :
 
     {
     "DEP": {
@@ -235,5 +252,28 @@ We obtain :
     "overall_f1": 0.85182067589475,
     "overall_accuracy": 0.9769229927925366
     }
+
+the last and final :
+
+    {
+    "DEP": {
+        "precision": 0.9996643732169828,
+        "recall": 0.9996308229292522,
+        "f1": 0.9996475977916128,
+        "number": 29796
+    },
+    "DEST": {
+        "precision": 0.9996626180836707,
+        "recall": 0.9996963460305678,
+        "f1": 0.9996794817726344,
+        "number": 29639
+    },
+    "overall_precision": 0.9996634979389248,
+    "overall_recall": 0.9996634979389248,
+    "overall_f1": 0.9996634979389248,
+    "overall_accuracy": 0.9999373098552595
+    }
+
+The model has shown a substantial improvement in performance from the first to the final evaluation, with significantly higher precision, recall, and F1 scores, as well as improved overall accuracy. 
 
 ## Conclusion
