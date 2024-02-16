@@ -185,7 +185,7 @@ However, this adds some special tokens [CLS] and [SEP] and the subword tokenizat
 - Assigning the label -100 to the special tokens [CLS] and [SEP] so they’re ignored by the PyTorch loss function (see CrossEntropyLoss).
 - Only labeling the first token of a given word. Assign -100 to other subtokens from the same word.
 
-On utilise la méthode tokenize_and_align_labels et on l'ajuste.
+We use the function tokenize_and_align_labels and we adjust it.
 
 ### Processus
 
