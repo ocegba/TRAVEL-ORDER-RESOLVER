@@ -277,3 +277,31 @@ the last and final :
 The model has shown a substantial improvement in performance from the first to the final evaluation, with significantly higher precision, recall, and F1 scores, as well as improved overall accuracy. 
 
 ## Conclusion
+In conclusion, our approach to creating an IOB-formatted CSV file for entity recognition has proven effective in enhancing model training for token classification. The utilization of the IOB format, with its clear indication of entity positions within text sequences, has provided a structured representation crucial for accurate model training.
+
+The diversity of our dataset, obtained from official French government sources, ensures a comprehensive representation of geographical entities. Our meticulous approach to sentence pattern generation, city replacement, labeling, and IOB tagging has resulted in a robust training dataset.
+
+Throughout the process, we closely followed Hugging Face documentation, ensuring best practices for dataset creation, preprocessing, and model configuration. The adoption of the CamembertForTokenClassification model, coupled with a well-defined training strategy, has led to substantial performance improvements. The metrics demonstrate the model's precision, recall, F1 scores, and overall accuracy.
+
+As we look towards future enhancements and model refinements, several ideas can be considered to address additional challenges, such as recognizing intermediate cities and handling proper nouns:
+
+**1) Incorporating Intermediate City Recognition:**     
+Extend the dataset and labeling process to include sentences with intermediate cities.
+Augment sentence patterns to encompass scenarios involving multiple cities, providing the model with varied examples.
+
+**2) Named Entity Recognition (NER) for Proper Nouns:**     
+Integrate Named Entity Recognition techniques to identify and categorize proper nouns in the text.
+Leverage pre-trained models specifically designed for recognizing and classifying named entities, ensuring accurate identification of location names.
+
+**3) Fine-Tuning with Expanded Dataset:**   
+Continuously expand the dataset to include more geographical variations, unique city names, and diverse sentence structures.
+Implement fine-tuning strategies to adapt the model to the evolving dataset, promoting adaptability to different linguistic nuances.
+
+**4) Utilizing Contextual Embeddings:**     
+Explore the use of contextual embeddings, to capture the contextual information surrounding city names.
+
+**6) Post-Processing for Continuity:**      
+Implement post-processing techniques to ensure continuity in recognizing entities across subword tokenization, addressing challenges posed by [CLS], [SEP], and subword token splits.
+
+**7) Adaptive Learning Rate Strategies:**
+Experiment with adaptive learning rate strategies to dynamically adjust learning rates during training, potentially improving convergence and avoiding overshooting.
