@@ -6,7 +6,7 @@ import langid
 nlp_fr = spacy.load('fr_core_news_sm')
 
 # Specify the local path to your model
-model_path = "./models/trajet_v1"
+model_path = "./models/trajet_v2"
 
 # Load the tokenizer and model from the local path
 tokenizer = CamembertTokenizerFast.from_pretrained(model_path)
