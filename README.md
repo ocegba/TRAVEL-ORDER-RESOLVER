@@ -138,6 +138,11 @@ Additionally, the dataset includes labeled information for each word in the sent
 This labeled data is crucial for training and evaluating our AI model's performance accurately. The patterns and associated information in our dataset serve as the foundation for developing a robust model capable of precisely identifying departure and arrival cities in diverse linguistic contexts.
 
 ## Method
+We initially chose Spacy for Named Entity Recognition (NER), but upon reflection, we decided to switch to Camembert.
+
+Our decision is grounded in several factors. Camembert, being a transformer-based natural language processing (NLP) model, has demonstrated impressive performance across various language processing tasks. Trained specifically on French data, it aligns well with our linguistic context, potentially enhancing NER accuracy.
+
+Camembert's focus on the French language, coupled with strong community support and documentation, makes it a pragmatic choice. The model's pre-trained nature for French contributes to improved results compared to more generic models.
 
 We referred to the process outlined in the [Hugging Face documentation](https://huggingface.co/docs/transformers/tasks/token_classification) to realize this project.
 
