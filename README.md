@@ -138,6 +138,11 @@ Additionally, the dataset includes labeled information for each word in the sent
 This labeled data is crucial for training and evaluating our AI model's performance accurately. The patterns and associated information in our dataset serve as the foundation for developing a robust model capable of precisely identifying departure and arrival cities in diverse linguistic contexts.
 
 ## Method
+We initially chose Spacy for Named Entity Recognition (NER), but upon reflection, we decided to switch to Camembert.
+
+Our decision is grounded in several factors. Camembert, being a transformer-based natural language processing (NLP) model, has demonstrated impressive performance across various language processing tasks. Trained specifically on French data, it aligns well with our linguistic context, potentially enhancing NER accuracy.
+
+Camembert's focus on the French language, coupled with strong community support and documentation, makes it a pragmatic choice. The model's pre-trained nature for French contributes to improved results compared to more generic models.
 
 We referred to the process outlined in the [Hugging Face documentation](https://huggingface.co/docs/transformers/tasks/token_classification) to realize this project.
 
@@ -207,8 +212,28 @@ After training, the model was evaluated on a separate test dataset. Metrics such
 The final results, including metrics and any notable observations, were saved to a JSON file for further analysis. This file is stored in the "results" directory.
 
 ### Metrics
-For evaluating the performance of your model, we've mentioned optimizing the F1 score as the primary metric. Additionally, we could consider including other metrics such as precision, recall, and accuracy. 
+For evaluating the performance of your model, we've mentioned optimizing the F1 score as the primary metric. Additionally, we could consider including other metrics such as precision, recall, and accuracy. To do that, we referred to this [documentation](https://huggingface.co/docs/transformers/tasks/token_classification#evaluate) 
 
-## Résultats
+## Results
+We obtain :
+
+    {
+    "DEP": {
+        "precision": 0.7963299418604651,
+        "recall": 0.8560546875,
+        "f1": 0.825112951807229,
+        "number": 15360
+    },
+    "DEST": {
+        "precision": 0.8377068557919621,
+        "recall": 0.9227864583333333,
+        "f1": 0.8781908302354398,
+        "number": 15360
+    },
+    "overall_precision": 0.8172708782005265,
+    "overall_recall": 0.8894205729166667,
+    "overall_f1": 0.85182067589475,
+    "overall_accuracy": 0.9769229927925366
+    }
 
 ## Conclusion
